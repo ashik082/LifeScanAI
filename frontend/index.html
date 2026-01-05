@@ -180,7 +180,8 @@ h1 {
     letter-spacing: 0.5px;
 }
 
-.form-group input {
+.form-group input,
+.form-group select {
     padding: 14px 16px;
     border-radius: 12px;
     border: 2px solid rgba(255, 255, 255, 0.15);
@@ -191,12 +192,18 @@ h1 {
     font-weight: 500;
 }
 
-.form-group input:focus {
+.form-group input:focus,
+.form-group select:focus {
     outline: none;
     border-color: #4dd9ff;
     background: rgba(77, 217, 255, 0.08);
     box-shadow: 0 0 20px rgba(77, 217, 255, 0.25);
     transform: translateY(-2px);
+}
+
+.form-group select option {
+    background: #1a2f4d;
+    color: #ffffff;
 }
 
 .form-group input::placeholder {
@@ -400,18 +407,42 @@ li:hover {
             </div>
             <div class="form-group">
                 <label for="Sex">Sex</label>
-                <input id="Sex" type="number" placeholder="1 = Male, 0 = Female">
+                <select id="Sex">
+                    <option value="0">Female</option>
+                    <option value="1">Male</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="AgeCategory">Age Category</label>
-                <input id="AgeCategory" type="number" placeholder="0-12">
+                <select id="AgeCategory">
+                    <option value="0">18-24</option>
+                    <option value="1">25-29</option>
+                    <option value="2">30-34</option>
+                    <option value="3">35-39</option>
+                    <option value="4">40-44</option>
+                    <option value="5">45-49</option>
+                    <option value="6">50-54</option>
+                    <option value="7">55-59</option>
+                    <option value="8">60-64</option>
+                    <option value="9">65-69</option>
+                    <option value="10">70-74</option>
+                    <option value="11">75-79</option>
+                    <option value="12">80 or older</option>
+                </select>
             </div>
         </div>
 
         <div class="form-row">
             <div class="form-group">
                 <label for="Race">Race</label>
-                <input id="Race" type="number" placeholder="0-5">
+                <select id="Race">
+                    <option value="0">American Indian / Alaska Native</option>
+                    <option value="1">Asian</option>
+                    <option value="2">Black</option>
+                    <option value="3">Hispanic</option>
+                    <option value="4">Other</option>
+                    <option value="5">White</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="SleepTime">Sleep Time (Hours)</label>
@@ -419,7 +450,13 @@ li:hover {
             </div>
             <div class="form-group">
                 <label for="GenHealth">General Health</label>
-                <input id="GenHealth" type="number" placeholder="0-4">
+                <select id="GenHealth">
+                    <option value="0">Poor</option>
+                    <option value="1">Fair</option>
+                    <option value="2">Good</option>
+                    <option value="3">Very Good</option>
+                    <option value="4">Excellent</option>
+                </select>
             </div>
         </div>
     </div>
@@ -428,31 +465,53 @@ li:hover {
         <h3 class="section-title">Health Metrics</h3>
         <div class="form-row">
             <div class="form-group">
-                <label for="PhysicalHealth">Physical Health (Poor Days)</label>
-                <input id="PhysicalHealth" type="number" placeholder="0-30">
+                <label for="PhysicalHealth">Physical Health</label>
+                <select id="PhysicalHealth">
+                    <option value="0">No physical health issues</option>
+                    <option value="5">Mild physical health problems</option>
+                    <option value="15">Moderate physical health problems</option>
+                    <option value="25">Severe physical health problems</option>
+                </select>
             </div>
             <div class="form-group">
-                <label for="MentalHealth">Mental Health (Poor Days)</label>
-                <input id="MentalHealth" type="number" placeholder="0-30">
+                <label for="MentalHealth">Mental Health</label>
+                <select id="MentalHealth">
+                    <option value="0">No mental stress</option>
+                    <option value="5">Mild mental stress</option>
+                    <option value="15">Moderate mental stress</option>
+                    <option value="25">Severe mental stress</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="Stroke">Stroke History</label>
-                <input id="Stroke" type="number" placeholder="1 = Yes, 0 = No">
+                <select id="Stroke">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
             </div>
         </div>
 
         <div class="form-row">
             <div class="form-group">
                 <label for="DiffWalking">Difficulty Walking</label>
-                <input id="DiffWalking" type="number" placeholder="1 = Yes, 0 = No">
+                <select id="DiffWalking">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="Diabetic">Diabetic</label>
-                <input id="Diabetic" type="number" placeholder="1 = Yes, 0 = No">
+                <select id="Diabetic">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="KidneyDisease">Kidney Disease</label>
-                <input id="KidneyDisease" type="number" placeholder="1 = Yes, 0 = No">
+                <select id="KidneyDisease">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
             </div>
         </div>
     </div>
@@ -462,26 +521,41 @@ li:hover {
         <div class="form-row">
             <div class="form-group">
                 <label for="Smoking">Smoking</label>
-                <input id="Smoking" type="number" placeholder="1 = Yes, 0 = No">
+                <select id="Smoking">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="AlcoholDrinking">Alcohol Drinking</label>
-                <input id="AlcoholDrinking" type="number" placeholder="1 = Yes, 0 = No">
+                <select id="AlcoholDrinking">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="PhysicalActivity">Physical Activity</label>
-                <input id="PhysicalActivity" type="number" placeholder="1 = Yes, 0 = No">
+                <select id="PhysicalActivity">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
             </div>
         </div>
 
         <div class="form-row">
             <div class="form-group">
                 <label for="Asthma">Asthma</label>
-                <input id="Asthma" type="number" placeholder="1 = Yes, 0 = No">
+                <select id="Asthma">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="SkinCancer">Skin Cancer</label>
-                <input id="SkinCancer" type="number" placeholder="1 = Yes, 0 = No">
+                <select id="SkinCancer">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
             </div>
         </div>
     </div>
