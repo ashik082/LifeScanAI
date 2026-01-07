@@ -362,10 +362,10 @@ li:hover {
             <span class="logo-text">LifeScanAI</span>
         </div>
         <nav class="main-nav">
-            <a href="landing.html" class="nav-link">Home</a>
-            <a href="index.html" class="nav-link active">Risk Analysis</a>
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="predict.html" class="nav-link active">Risk Analysis</a>
             <a href="history.html" class="nav-link">History</a>
-            <a href="landing.html#contact" class="nav-link">Contact</a>
+            <a href="index.html#contact" class="nav-link">Contact</a>
         </nav>
     </div>
 </header>
@@ -402,7 +402,7 @@ li:hover {
         <h3 class="section-title">Personal Information</h3>
         <div class="form-row">
             <div class="form-group">
-                <label for="BMI">Body Mass Index</label>
+                <label for="BMI">Body Mass index</label>
                 <input id="BMI" type="number" step="0.1" placeholder="e.g., 25.5">
             </div>
             <div class="form-group">
@@ -643,7 +643,7 @@ function predict() {
     resultDiv.innerHTML = "🔄 Analyzing...";
     resultDiv.className = "";
 
-    fetch("http://https://lifescanai.onrender.com/predict", {
+    fetch("https://lifescanai.onrender.com/predict", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(values)
@@ -699,10 +699,10 @@ window.onload = loadHistory;
         <div class="footer-section">
             <h4 class="footer-title">Quick Links</h4>
             <ul class="footer-links">
-                <li><a href="landing.html">Home</a></li>
-                <li><a href="index.html">Risk Analysis</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="predict.html">Risk Analysis</a></li>
                 <li><a href="history.html">History</a></li>
-                <li><a href="landing.html#contact">Contact</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
             </ul>
         </div>
         <div class="footer-section">
