@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LifeScanAI – Heart Disease Prediction</title>
+<link rel="stylesheet" href="common-styles.css">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0a1628 0%, #1a2f4d 50%, #0f3d66 100%);
+    font-family: 'Segoe UI', 'Trebuchet MS', sans-serif;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    color: #f0f0f0;
+}
+
+.content-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 120px 30px 80px;
+}
+
+.wrapper {
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+.container {
+    flex: 2;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    border-radius: 25px;
+    padding: 50px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.header-top {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.page-heart-icon {
+    font-size: 60px;
+    animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+    0%, 100% {
+        transform: scale(1);
+    }
+    25% {
+        transform: scale(1.1);
+    }
+    50% {
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+h1 {
+    font-size: 3em;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ff6b6b, #ff1744, #d32f2f);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 5px 20px rgba(255, 27, 68, 0.3);
+    letter-spacing: -1px;
+}
+
+.tagline {
+    font-size: 1.1em;
+    color: rgba(255, 255, 255, 0.8);
+    margin-top: 10px;
+    font-weight: 300;
+}
+
+.motivation {
+    background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(255, 23, 68, 0.1));
+    border-left: 5px solid #ff6b6b;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 40px;
+    border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+.motivation h3 {
+    color: #ff6b6b;
+    font-size: 1.2em;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.motivation p {
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.6;
+    font-size: 0.95em;
+}
+
+.form-section {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 18px;
+    padding: 35px;
+    margin-bottom: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.section-title {
+    font-size: 1.4em;
+    font-weight: 700;
+    color: #4dd9ff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.section-title::before {
+    content: '';
+    width: 4px;
+    height: 28px;
+    background: linear-gradient(135deg, #ff6b6b, #ff1744);
+    border-radius: 2px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 25px;
+    margin-bottom: 25px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 0.9em;
+    margin-bottom: 10px;
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-group input,
+.form-group select {
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+    font-size: 1em;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 500;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #4dd9ff;
+    background: rgba(77, 217, 255, 0.08);
+    box-shadow: 0 0 20px rgba(77, 217, 255, 0.25);
+    transform: translateY(-2px);
+}
+
+.form-group select option {
+    background: #1a2f4d;
+    color: #ffffff;
+}
+
+.form-group input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.predict-btn {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, #ff6b6b, #ff1744);
+    border: none;
+    border-radius: 14px;
+    font-weight: 800;
+    font-size: 1.15em;
+    cursor: pointer;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 8px 25px rgba(255, 27, 68, 0.4);
+    margin-top: 15px;
+}
+
+.predict-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(255, 27, 68, 0.6);
+}
+
+.predict-btn:active {
+    transform: translateY(-1px);
+}
+
+.result-section {
+    margin-top: 30px;
+    padding: 35px;
+    background: linear-gradient(135deg, rgba(255, 107, 107, 0.08), rgba(77, 217, 255, 0.08));
+    border-radius: 18px;
+    text-align: center;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid rgba(255, 107, 107, 0.2);
+}
+
+#result {
+    font-size: 1.6em;
+    font-weight: 700;
+    color: #4dd9ff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+#result.high-risk {
+    color: #ff6b6b;
+    font-size: 1.8em;
+}
+
+#result.low-risk {
+    color: #4dd9ff;
+}
+
+.history {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    border-radius: 25px;
+    padding: 30px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    height: fit-content;
+    position: sticky;
+    top: 30px;
+}
+
+.history h3 {
+    font-size: 1.3em;
+    font-weight: 700;
+    color: #4dd9ff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.history h3::before {
+    content: '📋';
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    font-size: 0.95em;
+    margin-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 12px;
+    color: rgba(255, 255, 255, 0.8);
+    transition: all 0.3s ease;
+}
+
+li:hover {
+    color: #4dd9ff;
+    padding-left: 8px;
+}
+
+.small-btn {
+    background: linear-gradient(135deg, rgba(77, 217, 255, 0.2), rgba(77, 217, 255, 0.1));
+    border: 2px solid rgba(77, 217, 255, 0.4);
+    color: #4dd9ff;
+    padding: 10px;
+    margin-top: 15px;
+    border-radius: 10px;
+    width: 100%;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.small-btn:hover {
+    background: rgba(77, 217, 255, 0.3);
+    box-shadow: 0 5px 15px rgba(77, 217, 255, 0.3);
+}
+
+@media (max-width: 1024px) {
+    .wrapper {
+        flex-direction: column;
+    }
+    
+    .history {
+        position: static;
+    }
+    
+    h1 {
+        font-size: 2.2em;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="main-header">
+    <div class="header-container">
+        <div class="logo">
+            <span class="heart-icon">❤️</span>
+            <span class="logo-text">LifeScanAI</span>
+        </div>
+        <nav class="main-nav">
+            <a href="landing.html" class="nav-link">Home</a>
+            <a href="index.html" class="nav-link active">Risk Analysis</a>
+            <a href="history.html" class="nav-link">History</a>
+            <a href="landing.html#contact" class="nav-link">Contact</a>
+        </nav>
+    </div>
+</header>
+
+<div class="content-wrapper">
+
+<div class="wrapper">
+
+<div class="container">
+    <div class="header">
+        <div class="header-top">
+            <div class="page-heart-icon">❤️</div>
+            <h1>LifeScanAI</h1>
+        </div>
+        <p class="tagline">Advanced Heart Disease Risk Assessment</p>
+    </div>
+
+    <div class="motivation">
+        <h3>Prevention is Better Than Cure</h3>
+        <p>Early detection of heart disease risk can save lives. By monitoring key health indicators, you can take preventive measures, adopt healthier lifestyles, and reduce your risk of heart disease. Knowledge is power – let's keep your heart healthy together.</p>
+    </div>
+
+    <div class="form-section">
+        <h3 class="section-title">Candidate Information</h3>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="CandidateName">Candidate Name</label>
+                <input id="CandidateName" type="text" placeholder="Enter full name">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-section">
+        <h3 class="section-title">Personal Information</h3>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="BMI">Body Mass Index</label>
+                <input id="BMI" type="number" step="0.1" placeholder="e.g., 25.5">
+            </div>
+            <div class="form-group">
+                <label for="Sex">Sex</label>
+                <select id="Sex">
+                    <option value="0">Female</option>
+                    <option value="1">Male</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="AgeCategory">Age Category</label>
+                <select id="AgeCategory">
+                    <option value="0">18-24</option>
+                    <option value="1">25-29</option>
+                    <option value="2">30-34</option>
+                    <option value="3">35-39</option>
+                    <option value="4">40-44</option>
+                    <option value="5">45-49</option>
+                    <option value="6">50-54</option>
+                    <option value="7">55-59</option>
+                    <option value="8">60-64</option>
+                    <option value="9">65-69</option>
+                    <option value="10">70-74</option>
+                    <option value="11">75-79</option>
+                    <option value="12">80 or older</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="Race">Race</label>
+                <select id="Race">
+                    <option value="0">American Indian / Alaska Native</option>
+                    <option value="1">Asian</option>
+                    <option value="2">Black</option>
+                    <option value="3">Hispanic</option>
+                    <option value="4">Other</option>
+                    <option value="5">White</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="SleepTime">Sleep Time (Hours)</label>
+                <input id="SleepTime" type="number" placeholder="e.g., 7">
+            </div>
+            <div class="form-group">
+                <label for="GenHealth">General Health</label>
+                <select id="GenHealth">
+                    <option value="0">Poor</option>
+                    <option value="1">Fair</option>
+                    <option value="2">Good</option>
+                    <option value="3">Very Good</option>
+                    <option value="4">Excellent</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-section">
+        <h3 class="section-title">Health Metrics</h3>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="PhysicalHealth">Physical Health</label>
+                <select id="PhysicalHealth">
+                    <option value="0">No physical health issues</option>
+                    <option value="5">Mild physical health problems</option>
+                    <option value="15">Moderate physical health problems</option>
+                    <option value="25">Severe physical health problems</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="MentalHealth">Mental Health</label>
+                <select id="MentalHealth">
+                    <option value="0">No mental stress</option>
+                    <option value="5">Mild mental stress</option>
+                    <option value="15">Moderate mental stress</option>
+                    <option value="25">Severe mental stress</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="Stroke">Stroke History</label>
+                <select id="Stroke">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="DiffWalking">Difficulty Walking</label>
+                <select id="DiffWalking">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="Diabetic">Diabetic</label>
+                <select id="Diabetic">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="KidneyDisease">Kidney Disease</label>
+                <select id="KidneyDisease">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-section">
+        <h3 class="section-title">Lifestyle Factors</h3>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="Smoking">Smoking</label>
+                <select id="Smoking">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="AlcoholDrinking">Alcohol Drinking</label>
+                <select id="AlcoholDrinking">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="PhysicalActivity">Physical Activity</label>
+                <select id="PhysicalActivity">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="Asthma">Asthma</label>
+                <select id="Asthma">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="SkinCancer">Skin Cancer</label>
+                <select id="SkinCancer">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <button class="predict-btn" onclick="predict()">🏥 Analyze Heart Risk</button>
+
+    <div class="result-section">
+        <div id="result">Fill in your information and click Analyze to get your risk assessment</div>
+    </div>
+</div>
+
+<div class="history">
+    <h3>Prediction History</h3>
+    <ul id="historyList"></ul>
+    <button class="small-btn" onclick="goToHistory()">View Full History</button>
+</div>
+
+</div>
+
+<script>
+function saveHistory(entry) {
+    let history = JSON.parse(localStorage.getItem("lifescan_history")) || [];
+    history.unshift(entry);
+    localStorage.setItem("lifescan_history", JSON.stringify(history));
+}
+
+function loadHistory() {
+    let history = JSON.parse(localStorage.getItem("lifescan_history")) || [];
+    let list = document.getElementById("historyList");
+    list.innerHTML = "";
+
+    if (history.length === 0) {
+        list.innerHTML = "<li style='color: rgba(255,255,255,0.5); text-align: center;'>No history yet</li>";
+        return;
+    }
+
+    history.slice(0, 5).forEach(h => {
+        let li = document.createElement("li");
+        li.innerHTML = `<strong>${h.name || 'Unknown'}</strong><br>${h.result}<br><small>${h.timestamp}</small>`;
+        list.appendChild(li);
+    });
+}
+
+function goToHistory() {
+    window.location.href = "history.html";
+}
+
+function predict() {
+    const resultDiv = document.getElementById("result");
+    const candidateName = document.getElementById("CandidateName").value.trim();
+    
+    if (!candidateName) {
+        resultDiv.innerHTML = "⚠️ Please enter candidate name";
+        resultDiv.className = "";
+        return;
+    }
+    
+    const values = {
+        BMI: parseFloat(BMI.value),
+        Smoking: parseInt(Smoking.value),
+        AlcoholDrinking: parseInt(AlcoholDrinking.value),
+        Stroke: parseInt(Stroke.value),
+        PhysicalHealth: parseInt(PhysicalHealth.value),
+        MentalHealth: parseInt(MentalHealth.value),
+        DiffWalking: parseInt(DiffWalking.value),
+        Sex: parseInt(Sex.value),
+        AgeCategory: parseInt(AgeCategory.value),
+        Race: parseInt(Race.value),
+        Diabetic: parseInt(Diabetic.value),
+        PhysicalActivity: parseInt(PhysicalActivity.value),
+        GenHealth: parseInt(GenHealth.value),
+        SleepTime: parseFloat(SleepTime.value),
+        Asthma: parseInt(Asthma.value),
+        KidneyDisease: parseInt(KidneyDisease.value),
+        SkinCancer: parseInt(SkinCancer.value)
+    };
+
+    
+    if (Object.values(values).some(v => isNaN(v))) {
+        resultDiv.innerHTML = "⚠️ Please fill in all fields";
+        resultDiv.className = "";
+        return;
+    }
+
+    resultDiv.innerHTML = "🔄 Analyzing...";
+    resultDiv.className = "";
+
+    fetch("http://https://lifescanai.onrender.com/predict", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(values)
+    })
+    .then(res => res.json())
+    .then(data => {
+        const result = data.result;
+        resultDiv.innerHTML = `🏥 ${result}`;
+        
+        if (result.includes("High") || result.includes("RISK")) {
+            resultDiv.className = "high-risk";
+        } else {
+            resultDiv.className = "low-risk";
+        }
+
+        saveHistory({
+            name: candidateName,
+            BMI: values.BMI,
+            AgeCategory: values.AgeCategory,
+            SleepTime: values.SleepTime,
+            result: result,
+            timestamp: new Date().toLocaleString()
+        });
+
+        loadHistory();
+    })
+    .catch(err => {
+        resultDiv.innerHTML = "❌ Connection Error. Ensure the backend is running.";
+        resultDiv.className = "high-risk";
+        console.error(err);
+    });
+}
+
+window.onload = loadHistory;
+</script>
+
+</div>
+
+</div>
+
+
+<footer class="main-footer">
+    <div class="footer-container">
+        <div class="footer-section">
+            <div class="footer-logo">
+                <span class="heart-icon">❤️</span>
+                <span>LifeScanAI</span>
+            </div>
+            <p class="footer-description">
+                Revolutionizing heart health through AI-powered predictions and personalized insights.
+            </p>
+        </div>
+        <div class="footer-section">
+            <h4 class="footer-title">Quick Links</h4>
+            <ul class="footer-links">
+                <li><a href="landing.html">Home</a></li>
+                <li><a href="index.html">Risk Analysis</a></li>
+                <li><a href="history.html">History</a></li>
+                <li><a href="landing.html#contact">Contact</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h4 class="footer-title">Resources</h4>
+            <ul class="footer-links">
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Research</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms of Service</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h4 class="footer-title">Connect</h4>
+            <div class="social-links">
+                <a href="#" class="social-link"> Twitter</a>
+                <a href="#" class="social-link"> LinkedIn</a>
+                <a href="#" class="social-link"> Facebook</a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy;2026 LifeScanAI. All rights reserved | Empowering healthier lives through AI</p>
+    </div>
+</footer>
+
+</body>
+</html>
