@@ -38,6 +38,12 @@ LifeScanAI uses a supervised machine learning model trained on a large public he
 - LocalStorage (for prediction history)
 
 
+## Deployment
+
+- **Backend:** Deployed on [Render](https://lifescanai.onrender.com/)
+- **Frontend:** Deployed on [Netlify](https://lifescanai.netlify.app/)
+
+
 ## Project Structure
 
 LifeScanAI/
